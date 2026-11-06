@@ -280,7 +280,7 @@ body.hc #introOverlay{background:#000}
 .intro-foot{font-size:.78rem;color:var(--mut);margin-top:0.625rem}
 
 /* ---------- janelas estreitas (desktop) ---------- */
-@media(max-width:600px){
+@media(max-width:600px) and (orientation:portrait){
   #hud{grid-template-columns:minmax(0,1fr)}
   #hudTop{grid-template-columns:minmax(0,1fr) auto}
   #hudCenter{grid-column:1/-1;grid-row:2;align-items:stretch}
@@ -289,7 +289,7 @@ body.hc #introOverlay{background:#000}
   #dock{grid-template-columns:auto minmax(0,1fr)}
   .dock-actions{grid-column:1/-1;flex-direction:row;flex-wrap:wrap}
 }
-@media(max-width:820px){
+@media(max-width:820px) and (orientation:portrait){
   .intro-steps{grid-template-columns:1fr}
   .brand p{display:none}
 }
@@ -396,8 +396,74 @@ body{height:100vh;height:100dvh}
 #edgeArrow{display:none;position:absolute;z-index:9;width:0;height:0;pointer-events:none;border-top:0.9rem solid transparent;border-bottom:0.9rem solid transparent;border-left:1.5rem solid #0a5cab;filter:drop-shadow(0 0 0.15rem #fff) drop-shadow(0 0.1rem 0.3rem rgba(0,0,0,.6));animation:edgeP 1s ease-in-out infinite}
 @keyframes edgeP{50%{opacity:.55}}
 
-@media(max-width:560px){.board-grid{grid-template-columns:1fr}}
+@media(max-width:560px) and (orientation:portrait){.board-grid{grid-template-columns:1fr}}
 #feedLog li:nth-child(n+4){display:none}
+
+/* =====================================================================
+   CELULAR NA HORIZONTAL / TELAS BAIXAS (ex.: 568×320, 667×375, ou o
+   jogo dentro de uma caixa pequena no Canva). Tudo numa linha só no topo,
+   sem barra de título, fala do professor compacta e painel sobreposto.
+   ===================================================================== */
+#hudRight{display:flex;align-items:flex-start;gap:0.375rem}
+#hudRight .top-right .pill{color:var(--txt);border-color:var(--hudLine);background:var(--hud);box-shadow:var(--shadow);border-radius:0.625rem;padding:0.375rem 0.625rem;font-size:0.86rem}
+@media (max-height:480px), (max-width:700px) and (orientation:landscape){
+  body.touch #topbar, body.compact #topbar{display:none}
+  body.touch #main, body.compact #main{padding:0;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);padding-bottom:env(safe-area-inset-bottom)}
+  body.touch #gameShell, body.compact #gameShell{border:0;border-radius:0;min-height:0}
+  #hud{padding:0.375rem;gap:0.375rem}
+  #hudTop{gap:0.375rem}
+  .chip{font-size:0.8rem}
+  #hudWho{padding:0.125rem 0.5rem 0.125rem 0.125rem;gap:0.375rem}
+  #whoFace{width:1.25rem;height:1.25rem}
+  .obj{padding:0.1875rem 0.625rem;border-width:2px;gap:0.375rem;flex-wrap:nowrap}
+  .obj b{font-size:0.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .obj em{display:none}
+  .obj-phase{font-size:0.66rem;padding:0 0.375rem}
+  .case-btn{padding:0.3125rem 0.625rem}
+  .case-btn kbd{display:none}
+  .toast{font-size:0.78rem;padding:0.1875rem 0.625rem}
+  /* fala do professor: uma faixa compacta, sem foto, botão ao lado */
+  #dock{padding:0.3125rem 0.625rem;gap:0.5rem;grid-template-columns:minmax(0,1fr) auto;border-left-width:0.25rem}
+  #dockFace{display:none}
+  .dock-body strong{font-size:0.7rem}
+  .dock-body p{font-size:0.84rem;line-height:1.3}
+  .dock-actions{flex-direction:row}
+  .dock-actions button{padding:0.375rem 0.75rem;font-size:0.82rem}
+  .btn{padding:0.375rem 0.75rem;font-size:0.82rem}
+  .prompt-chip{padding:0.3125rem 0.75rem;font-size:0.82rem}
+  body.touch .joy{width:5.6rem;height:5.6rem;margin:0 0.5rem 0 0}
+  body.touch .joy-knob{width:2.4rem;height:2.4rem}
+  body.touch .mobile-e{width:3.9rem;height:3.9rem;font-size:1.35rem;margin:0 0 0.25rem 0.5rem}
+  /* painel do chamado: ocupa a lateral direita por inteiro e esconde o rodapé enquanto aberto */
+  #side{grid-row:2/4;width:min(19rem,48vw);padding:0.5rem 0.625rem;gap:0.25rem}
+  #side h2{font-size:0.9rem}
+  #hud:has(#side:not([hidden])) #hudBottom{visibility:hidden}
+  #feedLog li:nth-child(n+3){display:none}
+  /* cartões e quadro sempre com 2 colunas na horizontal */
+  .board-grid{grid-template-columns:1fr 1fr}
+  .ticket span{display:none}
+  .modal{padding:0.375rem}
+}
+
+/* minigame em tela baixa: tela do minigame à esquerda (o maior possível),
+   título, instrução, mensagens e botões numa coluna à direita */
+@media (max-height:480px){
+  .card-mg{width:100%;grid-template-columns:auto minmax(9.5rem,1fr);grid-template-rows:auto auto 1fr auto;align-items:start;padding:0.4rem 0.5rem}
+  .minigame-head{grid-column:2;grid-row:1/span 2}
+  .mg-top{flex-wrap:wrap;gap:0.25rem}
+  .minigame-head h3{font-size:0.9rem}
+  .minigame-head p{font-size:0.78rem;line-height:1.3}
+  .minigame-canvas-wrap{grid-column:1;grid-row:1/span 4;margin:0}
+  #mgCanvas{width:min(calc(100vw - 12.5rem),calc((100vh - 1.4rem)*1.7778))}
+  #mgMsg{grid-column:2;grid-row:3;font-size:0.78rem;line-height:1.3}
+  #mgMsg:empty{visibility:hidden}
+  .minigame-foot{grid-column:2;grid-row:4}
+}
+@media (max-height:300px){
+  #side .kicker.sec:last-of-type,#feedLog{display:none}
+  .lesson-text{font-size:.82rem}
+}
+#hudRight .top-right .pill,#hudRight .case-btn{font-size:0.8rem;line-height:1.2;padding:0.3125rem 0.625rem;font-weight:800;border-width:2px}
 
 </style>
 </head>
@@ -439,7 +505,7 @@ body{height:100vh;height:100dvh}
           <button id="objective" class="chip obj" type="button" title="Repetir a última fala do Prof. Carlos"><span id="objPhase" class="obj-phase"></span><b id="stepTitle"></b><em id="stepWhere"></em></button>
           <div id="toast" class="toast" role="status" aria-live="polite"></div>
         </div>
-        <button id="caseBtn" class="chip case-btn" type="button" aria-expanded="false" aria-controls="side">📋 Chamado <kbd>C</kbd></button>
+        <div id="hudRight"><button id="caseBtn" class="chip case-btn" type="button" aria-expanded="false" aria-controls="side">📋 Chamado <kbd>C</kbd></button></div>
       </div>
 
       <aside id="side" class="drawer" aria-label="Painel do chamado" hidden>
@@ -593,7 +659,7 @@ window.TechForgeBoot = { started:false, name:'', gender:'m', ready:false };
   function uiScale(){
     var w=window.innerWidth,h=window.innerHeight,b=document.body;
     var s=Math.min(w/1280,h/720);
-    if(b.classList.contains('touch'))s*=1.22;           // telas de toque: um pouco maior para o dedo
+    if(b.classList.contains('touch'))s*=(h<480?1.45:1.22);           // telas de toque: um pouco maior para o dedo
     if(b.classList.contains('large-text'))s*=1.12;
     s=Math.max(.55,Math.min(1.3,s));
     root.style.fontSize=(16*s).toFixed(2)+'px';
@@ -601,11 +667,20 @@ window.TechForgeBoot = { started:false, name:'', gender:'m', ready:false };
   function fitEl(el,maxW,maxH){
     el.style.zoom='';
     var r=el.getBoundingClientRect();if(!r.width||!r.height)return;
-    var z=Math.min(1,maxW/r.width,maxH/r.height);
-    if(z<.995)el.style.zoom=z.toFixed(3);
+    var z=Math.min(1,maxW/r.width,maxH/r.height)*.985;
+    if(z<.98)el.style.zoom=z.toFixed(3);
+  }
+  var topR=null,topHome=null;
+  function placeOptions(){
+    var tb=document.getElementById('topbar'),hr=document.getElementById('hudRight');
+    if(!tb||!hr)return;
+    if(!topR){topR=document.querySelector('.top-right');topHome=tb}
+    var hidden=getComputedStyle(tb).display==='none';
+    if(hidden&&topR.parentNode!==hr)hr.appendChild(topR);
+    else if(!hidden&&topR.parentNode!==topHome)topHome.appendChild(topR);
   }
   function fitAll(){
-    uiScale();
+    uiScale();placeOptions();
     var W=window.innerWidth,H=window.innerHeight;
     var mods=document.querySelectorAll('.modal.show');
     for(var i=0;i<mods.length;i++){var m=mods[i],c=m.firstElementChild,p=parseFloat(getComputedStyle(m).paddingTop)||8;if(c)fitEl(c,W-2*p,H-2*p)}
@@ -613,7 +688,7 @@ window.TechForgeBoot = { started:false, name:'', gender:'m', ready:false };
     if(gs&&d&&!d.hidden){var g=gs.getBoundingClientRect();fitEl(d,g.width-24,g.height*.34)}
     if(gs&&sd&&!sd.hidden&&ht&&hb){
       sd.style.maxHeight='none';sd.style.zoom='';
-      var a=ht.getBoundingClientRect(),bb=hb.getBoundingClientRect(),avail=Math.max(80,bb.top-a.bottom-16);
+      var a=ht.getBoundingClientRect(),bb=hb.getBoundingClientRect(),bottom=getComputedStyle(hb).visibility==='hidden'?gs.getBoundingClientRect().bottom:bb.top,avail=Math.max(80,bottom-a.bottom-12);
       fitEl(sd,sd.getBoundingClientRect().width,avail);sd.style.maxHeight='';
     }
   }
